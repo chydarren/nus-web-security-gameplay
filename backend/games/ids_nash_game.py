@@ -61,13 +61,15 @@ class IDSNashGameLogic(GameLogic):
         
         # 2. Calculate Payoffs (Net Change)
         # The payoff dictionary returned here contains the Net Change
-        net_changes, details = self._calculate_payoffs(player_actions, list(players.keys()))
+        net_changes, details = self._calculate_payoffs(player_actions, list(players.keys()), game_state)
         
         # 3. Apply to Final Scores
         # Final Score = Initial Assets + Net Change
         for pid, net_change in net_changes.items():
             game_state.scores[pid] = game_state.scores[pid] + net_change
             players[pid].total_score = game_state.scores[pid]
+
+        print(game_state.scores)
 
         # 4. Generate Summary
         invest_count = sum(1 for a in player_actions.values() if a == "invest")
@@ -169,7 +171,7 @@ class IDSNashGameLogic(GameLogic):
         else:
             investment_status =  "Partial Cooperation (One Vulnerable)"
 
-        loss_status = ", ".join([f"Player {players[pid].name}: {desc}" for pid, desc in details.items()])
+        loss_status = ", ".join([f"Player {players[pid].player_name}: {desc}" for pid, desc in details.items()])
 
         return f"{investment_status}; Loss Outcomes: {loss_status}"
 
@@ -193,7 +195,7 @@ class IDSNashGameLogic(GameLogic):
         """Determine winner based on final assets (Handles ties)"""
         if not game_state.scores:
             return None
-            
+
         max_score = max(game_state.scores.values())
         
         winners = [

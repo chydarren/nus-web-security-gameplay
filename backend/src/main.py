@@ -1,5 +1,6 @@
 import argparse
 import os
+import traceback
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -70,6 +71,7 @@ async def startup_event():
         logger.info("Game created successfully!")
     except Exception as e:
         logger.error(f"Failed to create game: {e}")
+        logger.error(traceback.format_exc())
 
 if __name__ == "__main__":
     uvicorn.run(

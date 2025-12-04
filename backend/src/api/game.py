@@ -85,6 +85,7 @@ async def create_game(config_file: str = "config/default.json"):
         }
     except Exception as e:
         logger.error(f"Failed to create game: {e}")
+        logger.error(traceback.format_exc())
         return {
             "success": False,
             "message": f"Failed to create game: {str(e)}",

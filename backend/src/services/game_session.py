@@ -1,14 +1,21 @@
 import asyncio
 import json
+import logging
 import sys
 import os
 from datetime import datetime, timedelta, timezone
+import traceback
 from typing import Dict, List, Optional, Type, Any
 from pathlib import Path
 import importlib
 
 # Add the parent directory to the path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 from src.models.core import GameState, GameConfig, GameEvent, EventType, GamePhase
 from src.models.player import Player, ActionData, RoundResult, GameSummary
@@ -40,9 +47,9 @@ class GameSession:
         self.round_deadline: Optional[datetime] = None
         self.round_timer_task: Optional[asyncio.Task] = None
         
-    async def initialize():
+    async def initialize(self):
         # Auto-add AI agents if configured
-        await self._auto_add_ai_agents()
+        await self._auto_add_ai_players()
     
     def _load_config(self) -> GameConfig:
         """Load game configuration from file"""
@@ -80,7 +87,7 @@ class GameSession:
         except (ImportError, AttributeError) as e:
             raise ValueError(f"Failed to load game logic class '{self.game_config.game_logic_class}': {e}. Make sure the module exists and the class name is correct.")
     
-    async def _auto_add_ai_agents(self) -> None:
+    async def _auto_add_ai_players(self) -> None:
         """Automatically add AI agents based on game configuration"""
         
         if not self.game_config.ai_agents:
@@ -91,10 +98,10 @@ class GameSession:
             try:
                 player = await self.add_ai_player(ai_config.agent_type, ai_config)
                 
-                print(f"Auto-added AI agent: {player.player_name} as {player.role}")
+                logger.info(f"Auto-added AI agent: {player.player_name} as {player.role}")
                 
             except Exception as e:
-                print(f"Warning: Failed to create AI agent: {e}")
+                logger.error(traceback.format_exc())
     
     async def add_player(self, player_name: str, role: str) -> Player:
         """Add a new player to the game with selected role"""
@@ -137,7 +144,7 @@ class GameSession:
         
         return player
     
-    async def add_ai_agent(self, agent_type: str, agent_config: Dict[str, Any]) -> Player:
+    async def add_ai_player(self, agent_type: str, agent_config: Dict[str, Any]) -> Player:
         """Add an AI agent to the game"""
         # Create AI agent using explicit class specification
         if '.' not in agent_config.agent_type:
@@ -161,7 +168,7 @@ class GameSession:
             # Extract class name from agent_type for cleaner default names
             class_name = agent_config.agent_type.split('.')[-1] if '.' in agent_config.agent_type else agent_config.agent_type
             player_name = f"AI-{class_name}-{len(self.ai_agents) + 1}"
-        player = await self.add_player(f"AI-{class_name}", role=agent_config.get("role", "player"))
+        player = await self.add_player(f"AI-{player_name}", role=agent_config.role)
         self.players[player.player_id] = player
         agent.set_player(player)
         
@@ -324,7 +331,7 @@ class GameSession:
         # Update player scores
         for player_id, payoff in round_result.payoffs.items():
             if player_id in self.players:
-                self.players[player_id].total_score += payoff
+                # Total score is handled by the game logic class. Only update round scores here.
                 self.players[player_id].round_scores.append(payoff)
         
         # Update game state

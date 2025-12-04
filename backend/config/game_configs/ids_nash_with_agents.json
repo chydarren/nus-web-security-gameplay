@@ -11,12 +11,13 @@
     "security_cost": 6.0,
     "loss_amount": 25.0,
     "direct_loss_prob": 0.5,
-    "indirect_loss_prob": 0.5
+    "indirect_loss_prob": 0.5,
+    "use_dynamic_p_q": false
   },
   "ai_agents": [
     {
-      "agent_type": "openai_agent.OpenAIAgent",
-      "player_name": "OpenAIAgent1",
+      "agent_type": "simple_agent.SimpleAgent",
+      "player_name": "SimpleAgent1",
       "role": "player",
       "config": {
         "investment_tendency": 0.7,
