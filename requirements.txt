@@ -1,0 +1,51 @@
+# ===== Core Dependencies =====
+fastapi>=0.110.0
+uvicorn[standard]>=0.22.0
+pydantic>=1.10.13,<3
+
+# ===== Production Dependencies =====
+# ASGI server for production
+gunicorn>=21.2.0
+
+# HTTP client for health checks and testing
+httpx>=0.25.0
+
+# Testing framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Development tools
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Security and validation
+python-multipart>=0.0.6
+
+# Environment management
+python-dotenv>=1.0.0
+
+numpy
+
+# Monitoring and logging (optional)
+# sentry-sdk[fastapi]>=1.32.0
+
+# Database drivers (optional - for future use)
+# asyncpg>=0.28.0        # PostgreSQL
+# aiosqlite>=0.19.0      # SQLite
+
+# Caching (optional)
+# redis>=4.6.0
+# aioredis>=2.0.0
+
+# Task queue (optional)
+# celery>=5.3.0
+
+# File handling (optional)
+# aiofiles>=23.0.0
+
+# Email sending (optional)
+# emails>=0.6.0
+
+# WebSocket support (optional)
+# websockets>=11.0.0

@@ -1,0 +1,17 @@
+{
+  "game_type": "security_game",
+  "game_logic_class": "security_game.SecurityGameLogic",
+  "description": "Welcome to the Network Security Defense Game! You are a defender protecting a network against cyber attacks. Each round, you can choose to reinforce your defenses or do nothing. Reinforcing costs points but increases your defense level and the overall network security. Attacks may occur randomly, and if successful, players lose points based on their individual defense levels. Work together to maintain network security while managing your individual costs and benefits.",
+  "total_rounds": 5,
+  "required_players": 3,
+  "round_timeout_seconds": 120,
+  "available_roles": ["defender"],
+  "turn_based": false,
+  "game_specific_config": {
+    "initial_network_security": 100,
+    "base_attack_probability": 0.3,
+    "reinforcement_cost": 5,
+    "reinforcement_benefit": 10,
+    "attack_damage_base": 50
+  }
+}
