@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/nus-ids-game/static/css/main.61f18477.css",
+    "main.js": "/nus-ids-game/static/js/main.bdb7eb0d.js",
+    "index.html": "/nus-ids-game/index.html",
+    "main.61f18477.css.map": "/nus-ids-game/static/css/main.61f18477.css.map",
+    "main.bdb7eb0d.js.map": "/nus-ids-game/static/js/main.bdb7eb0d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.61f18477.css",
+    "static/js/main.bdb7eb0d.js"
+  ]
+}
